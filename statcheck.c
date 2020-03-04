@@ -1,15 +1,29 @@
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
-    /* A program that loops forever reading a byte from stdin and printing it to stdout */
+#include <sys/types.h>
+#include <pwd.h>
+#include <grp.h>
+#include <sys/stat.h>
 
-    char c; // A char is one byte wide
+int main (int argc, char **argv) 
+{
+    struct stat directory;
+    char *type, *readok;
 
-    while (read(STDIN_FILENO, &c, 1) != -1) {
-        write(STDOUT_FILENO, &c, 1);
-    }
+    stat(argv[1], &directory);
+    if (S_ISREG(directory.st_mode))     /* Determine file type */
+  type = "regular";
+    else if (S_ISDIR(directory.st_mode))
+  type = "directory";
+    else
+        type = "other";
+    if ((directory.st_mode & S_IRUSR)) /* Check read access */
+  readok = "yes";
+    else
+        readok = "no";
 
-    return 0;
+    printf("type: %s, read: %s\n", type, readok);
+    exit(0);
 }
