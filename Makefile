@@ -6,6 +6,6 @@ statcheck.o: statcheck.c
 stdincopyexercise.o: stdincopyexercise.c
 	gcc -o stdincopyexercise stdincopyexercise.c
 
-make clean: 
+clean: 
 	rm stdincopyexercise
 	rm statcheck
